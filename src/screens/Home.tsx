@@ -43,12 +43,15 @@ export const Home = () => {
     return (
       <>
         {rowText.split('').map((char, index) => (
-          <div className='square' key={`char_${index}`}>
+          <div
+            className={char.trim() !== '' ? 'square' : 'square empty'}
+            key={`char_${index}`}
+          >
             {char}
           </div>
         ))}
         {Array.from({ length: emptySpaces }, (_, index) => (
-          <div className='square' key={`empty_${index}`}></div>
+          <div className='square empty' key={`empty_${index}`}></div>
         ))}
       </>
     );

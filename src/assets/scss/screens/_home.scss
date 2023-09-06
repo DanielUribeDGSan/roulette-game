@@ -54,7 +54,7 @@ $line1-squares: 15;
     align-items: center;
     font-size: 16px;
     font-weight: bold;
-    color: red;
+    color: #000;
     font-size: 4rem;
     cursor: pointer;
     border-radius: 0.5rem;
@@ -62,5 +62,9 @@ $line1-squares: 15;
     -moz-border-radius: 0.5rem;
     -ms-border-radius: 0.5rem;
     -o-border-radius: 0.5rem;
+  }
+
+  .empty {
+    background-image: linear-gradient(to top, #ffffff 0%, #ffffff 100%);
   }
 }
