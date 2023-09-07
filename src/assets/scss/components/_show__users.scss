@@ -1,0 +1,29 @@
+@import '../utils/index.scss';
+
+.show__users {
+  .container__users {
+    margin-top: 1rem;
+    position: relative;
+    display: flex;
+    gap: 50px;
+    & .content__users {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #487698;
+      font-size: 1.2rem;
+      gap: 5px;
+    }
+    & img {
+      width: 40px;
+      height: 40px;
+    }
+
+    .active {
+      background-color: #fff;
+      padding: 1rem;
+      border-radius: 1rem;
+    }
+  }
+}

@@ -8,10 +8,19 @@ interface DataItem {
 
 interface RouletteProps {
   data: DataItem[];
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setPoints: React.Dispatch<React.SetStateAction<number>>;
+  setPlay: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Roulette: React.FC<RouletteProps> = ({ data }) => {
+const Roulette: React.FC<RouletteProps> = ({
+  data,
+  setOpen,
+  setPoints,
+  setPlay,
+}) => {
   const [mustSpin, setMustSpin] = useState(false);
+  const [turned, setTurned] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
   const [rouletteData, setRouletteData] = useState<
     { completeOption: string; option: string }[]
@@ -21,6 +30,7 @@ const Roulette: React.FC<RouletteProps> = ({ data }) => {
     const newPrizeNumber = Math.floor(Math.random() * data.length);
     setPrizeNumber(newPrizeNumber);
     setMustSpin(true);
+    setTurned(true);
   };
 
   useEffect(() => {
@@ -35,6 +45,33 @@ const Roulette: React.FC<RouletteProps> = ({ data }) => {
     });
     setRouletteData(addShortString);
   }, [data]);
+
+  useEffect(() => {
+    let active = true;
+
+    if (active && !mustSpin && rouletteData.length > 1 && turned) {
+      if (rouletteData[prizeNumber].completeOption === 'Pierde turno') {
+        setPoints(-1);
+      } else {
+        setPoints(parseInt(rouletteData[prizeNumber].completeOption));
+      }
+      setTurned(false);
+      setOpen(false);
+      setPlay(true);
+    }
+
+    return () => {
+      active = false;
+    };
+  }, [
+    rouletteData,
+    mustSpin,
+    turned,
+    prizeNumber,
+    setOpen,
+    setPoints,
+    setPlay,
+  ]);
 
   return (
     <div className='roulette'>
@@ -55,32 +92,32 @@ const Roulette: React.FC<RouletteProps> = ({ data }) => {
               textDistance={60}
               fontSize={18}
               backgroundColors={[
-                '#000000',
-                '#175fa9',
-                '#169ed8',
-                '#239b63',
-                '#64b031',
-                '#efe61f',
-                '#f7a416',
-                '#e6471d',
-                '#dc0936',
-                '#e5177b',
-                '#be1180',
-                '#871f7f',
-                '#175fa9',
-                '#000000',
-                '#239b63',
-                '#64b031',
-                '#efe61f',
-                '#f7a416',
-                '#e6471d',
-                '#dc0936',
-                '#e5177b',
-                '#be1180',
-                '#871f7f',
-                '#efe61f',
-                '#f7a416',
-                '#e6471d',
+                '#0b1d21',
+                '#87758f',
+                '#85aab0',
+                '#a3c3b8',
+                '#e3edd2',
+                '#a8bcbd',
+                '#b6dec1',
+                '#0b1d21',
+                '#87758f',
+                '#85aab0',
+                '#a3c3b8',
+                '#e3edd2',
+                '#b6dec1',
+                '#0b1d21',
+                '#87758f',
+                '#85aab0',
+                '#a3c3b8',
+                '#e3edd2',
+                '#a8bcbd',
+                '#b6dec1',
+                '#0b1d21',
+                '#87758f',
+                '#85aab0',
+                '#a3c3b8',
+                '#e3edd2',
+                '#a8bcbd',
               ]}
               onStopSpinning={() => {
                 setMustSpin(false);

@@ -15,7 +15,13 @@ export const Board = ({ oration }: Props) => {
       <>
         {rowText.split('').map((char, index) => (
           <div
-            className={char.trim() !== '' ? 'square' : 'square empty'}
+            className={
+              char === ','
+                ? 'square success'
+                : char.trim() !== ''
+                ? 'square'
+                : 'square empty'
+            }
             key={`char_${index}`}
           >
             {char}

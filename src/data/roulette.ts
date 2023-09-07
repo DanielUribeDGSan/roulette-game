@@ -29,7 +29,7 @@ export const rouletteData = [
   },
   {
     id: 8,
-    text: '600',
+    text: 'Pierde turno',
   },
   {
     id: 9,
@@ -81,7 +81,7 @@ export const rouletteData = [
   },
   {
     id: 21,
-    text: '600',
+    text: 'Pierde turno',
   },
   {
     id: 22,
