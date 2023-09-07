@@ -10,7 +10,8 @@ import { get_users } from '../redux/features/users-slice.ts';
 
 import { ShowUsers } from '../components/ShowUsers.tsx';
 import { Score } from '../interfaces/sccore.ts';
-import { ShowAlertsPints } from '../components/ShowAlertsPints.tsx';
+import useShowAlerts from '../hooks/useShowAlerts.ts';
+import { useActionsPlayer } from '../hooks/useActionsPlayer.ts';
 
 interface State {
   users: { data: Score[] };
@@ -26,7 +27,20 @@ export const Home = () => {
   const [open, setOpen] = useState(false);
   const [points, setPoints] = useState(0);
   const [play, setPlay] = useState(false);
-  const oration = 'El abuelo es sabio y sabe lo que hace, como siempre';
+
+  const oration = 'Amores, por un placer mil dolores';
+
+  useShowAlerts({
+    points: points,
+    play: play,
+    setPlay: setPlay,
+  });
+
+  useActionsPlayer({
+    data: userData,
+    points: points,
+    play: play,
+  });
 
   useEffect(() => {
     dispatch(get_users());
@@ -34,7 +48,6 @@ export const Home = () => {
 
   return (
     <div className='home__screen'>
-      <ShowAlertsPints points={points} play={play} setPlay={setPlay} />
       <ShowUsers data={userData} />
       <Board oration={oration} />
       <Modal open={open} setOpen={setOpen}>
