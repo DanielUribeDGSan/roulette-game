@@ -8,39 +8,20 @@ interface Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   hiddeButton?: boolean;
-  vocals?: boolean;
-  setBuyVocals: React.Dispatch<React.SetStateAction<boolean>>;
-  setInputValue: React.Dispatch<React.SetStateAction<string>>;
-  setPlay: React.Dispatch<React.SetStateAction<boolean>>;
-  points: number;
 }
 
-export const Modal = ({
+export const ModalLetter = ({
   textButton,
   children,
   open,
   setOpen,
   hiddeButton = true,
-  vocals = false,
-  setBuyVocals,
-  setInputValue,
-  setPlay,
-  points,
 }: Props) => {
   const handleClickOpen = () => {
-    if (vocals) {
-      setBuyVocals(true);
-    }
     setOpen(true);
   };
 
   const handleClose = () => {
-    if (vocals) {
-      setBuyVocals(false);
-      setInputValue('');
-    }
-    if (points != 0) setPlay(true);
-
     setOpen(false);
   };
 

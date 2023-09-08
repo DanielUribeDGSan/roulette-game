@@ -1,7 +1,7 @@
 export const rouletteData = [
   {
     id: 1,
-    text: 'Pierde turno',
+    text: '1000',
   },
   {
     id: 2,
@@ -13,7 +13,7 @@ export const rouletteData = [
   },
   {
     id: 4,
-    text: '600',
+    text: '250',
   },
   {
     id: 5,
@@ -25,23 +25,23 @@ export const rouletteData = [
   },
   {
     id: 7,
-    text: '1000',
-  },
-  {
-    id: 8,
     text: 'Pierde turno',
   },
   {
-    id: 9,
-    text: '2000',
+    id: 8,
+    text: '600',
   },
   {
-    id: 10,
+    id: 9,
     text: '1000',
   },
   {
-    id: 11,
+    id: 10,
     text: '2000',
+  },
+  {
+    id: 11,
+    text: '1500',
   },
   {
     id: 12,
@@ -49,7 +49,7 @@ export const rouletteData = [
   },
   {
     id: 13,
-    text: '6000',
+    text: '1500',
   },
   {
     id: 14,
@@ -57,7 +57,7 @@ export const rouletteData = [
   },
   {
     id: 15,
-    text: '1500',
+    text: '6000',
   },
   {
     id: 16,
@@ -65,7 +65,7 @@ export const rouletteData = [
   },
   {
     id: 17,
-    text: '600',
+    text: '1500',
   },
   {
     id: 18,
@@ -77,7 +77,7 @@ export const rouletteData = [
   },
   {
     id: 20,
-    text: '1000',
+    text: '600',
   },
   {
     id: 21,
@@ -93,15 +93,23 @@ export const rouletteData = [
   },
   {
     id: 24,
-    text: '2000',
+    text: '250',
   },
   {
     id: 25,
-    text: '250',
+    text: '8000',
   },
   {
     id: 26,
     text: '6000',
+  },
+  {
+    id: 27,
+    text: '600',
+  },
+  {
+    id: 28,
+    text: 'Pierde turno',
   },
 
 ];

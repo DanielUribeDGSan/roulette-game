@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { getLocalStorage, setLocalStorage } from '../../utils/localstorage';
+import { getLocalStorageScore, setLocalStorage } from '../../utils/localstorage';
 import { Score } from '../../interfaces/sccore';
 import { UsersState } from '../../interfaces/users';
 
@@ -10,7 +10,7 @@ const initialState: UsersState = {
   data: [],
 };
 
-const authSlice = createSlice({
+const userSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
@@ -37,7 +37,7 @@ const authSlice = createSlice({
     },
 
     get_users: (state) => {
-      state.data = getLocalStorage('users');
+      state.data = getLocalStorageScore('users');
     },
 
   },
@@ -48,7 +48,6 @@ export const {
   delete_user,
   delete_all_users,
   get_users
-  // update_image_user,
-} = authSlice.actions;
+} = userSlice.actions;
 
-export default authSlice.reducer;
+export default userSlice.reducer;

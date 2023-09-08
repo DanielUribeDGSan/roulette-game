@@ -7,16 +7,22 @@ interface Props {
   points: number;
   play: boolean;
   setPlay: React.Dispatch<React.SetStateAction<boolean>>;
+  oration: string;
+  inputValue: string;
+  setPoints: React.Dispatch<React.SetStateAction<number>>;
 }
 
 
-const useShowAlerts = ({ points, play, setPlay }: Props) => {
+const useShowAlerts = ({ points, play, oration, inputValue, setPlay, setPoints }: Props) => {
 
   useEffect(() => {
     let active = true;
 
-    if (play) {
-      if (active && points >= 1) {
+    if (active && play && inputValue) {
+      const indice = oration.indexOf(inputValue);
+
+
+      if (points > 0 && indice !== -1) {
         Swal.fire({
           title: 'Has ganado',
           text: `${points}  puntos`,
@@ -27,11 +33,10 @@ const useShowAlerts = ({ points, play, setPlay }: Props) => {
           customClass: 'alert-points',
           confirmButtonText: 'Aceptar',
         });
-      }
-      if (active && points < 0) {
+      } else {
         Swal.fire({
-          title: 'Ooops',
-          text: `Pierdes turno`,
+          title: 'Letra no encontrada',
+          text: `Esa letra no existe en la oración`,
           width: 700,
           padding: '3em',
           color: '#716add',
@@ -39,14 +44,48 @@ const useShowAlerts = ({ points, play, setPlay }: Props) => {
           customClass: 'alert-points',
           confirmButtonText: 'Aceptar',
         });
+
       }
+
     }
+
+    if (active && play && points < 0) {
+      Swal.fire({
+        title: 'Ooops',
+        text: `Pierdes turno`,
+        width: 700,
+        padding: '3em',
+        color: '#716add',
+        background: `#fff url('${Backgroud}')`,
+        customClass: 'alert-points',
+        confirmButtonText: 'Aceptar',
+      });
+      setPlay(false);
+    }
+
+
+    if (active && play && points != 0) {
+      Swal.fire({
+        title: 'No escribiste una letra',
+        text: `Intentalo de nuevo`,
+        width: 700,
+        padding: '3em',
+        color: '#716add',
+        background: `#fff url('${Backgroud}')`,
+        customClass: 'alert-points',
+        confirmButtonText: 'Aceptar',
+      });
+      setPlay(false);
+      setPoints(0);
+    }
+
+
+
 
     return () => {
       active = false;
-      setPlay(false);
     };
-  }, [points, play, setPlay]);
+  }, [points, play, inputValue, oration, setPlay, setPoints]);
 
 }
 

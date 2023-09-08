@@ -10,6 +10,7 @@ interface RouletteProps {
   data: DataItem[];
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setPoints: React.Dispatch<React.SetStateAction<number>>;
+  setOpenLetter: React.Dispatch<React.SetStateAction<boolean>>;
   setPlay: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -17,6 +18,7 @@ const Roulette: React.FC<RouletteProps> = ({
   data,
   setOpen,
   setPoints,
+  setOpenLetter,
   setPlay,
 }) => {
   const [mustSpin, setMustSpin] = useState(false);
@@ -56,8 +58,16 @@ const Roulette: React.FC<RouletteProps> = ({
         setPoints(parseInt(rouletteData[prizeNumber].completeOption));
       }
       setTurned(false);
-      setOpen(false);
-      setPlay(true);
+      setTimeout(() => {
+        setOpen(false);
+      }, 1300);
+      setTimeout(() => {
+        if (rouletteData[prizeNumber].completeOption === 'Pierde turno') {
+          setPlay(true);
+        } else {
+          setOpenLetter(true);
+        }
+      }, 1500);
     }
 
     return () => {
@@ -70,6 +80,7 @@ const Roulette: React.FC<RouletteProps> = ({
     prizeNumber,
     setOpen,
     setPoints,
+    setOpenLetter,
     setPlay,
   ]);
 
@@ -92,32 +103,34 @@ const Roulette: React.FC<RouletteProps> = ({
               textDistance={60}
               fontSize={18}
               backgroundColors={[
-                '#0b1d21',
-                '#87758f',
-                '#85aab0',
-                '#a3c3b8',
-                '#e3edd2',
-                '#a8bcbd',
-                '#b6dec1',
-                '#0b1d21',
-                '#87758f',
-                '#85aab0',
-                '#a3c3b8',
-                '#e3edd2',
-                '#b6dec1',
-                '#0b1d21',
-                '#87758f',
-                '#85aab0',
-                '#a3c3b8',
-                '#e3edd2',
-                '#a8bcbd',
-                '#b6dec1',
-                '#0b1d21',
-                '#87758f',
-                '#85aab0',
-                '#a3c3b8',
-                '#e3edd2',
-                '#a8bcbd',
+                '#627FC0',
+                '#5085A5',
+                '#5982B2',
+                '#627FC0',
+                '#6B7CCD',
+                '#7479DA',
+                '#2F637D', // negro
+                '#8673F5',
+                '#8F70FF',
+                '#986DFF',
+                '#A16AFF',
+                '#AA67FF',
+                '#B364FF',
+                '#173745', // negro
+                '#C55EFF',
+                '#CE5BFF',
+                '#D758FF',
+                '#E055FF',
+                '#E952FF',
+                '#F24FFF',
+                '#234D69', // negro
+                '#FF49F8',
+                '#FF46EB',
+                '#FF43DE',
+                '#FF40D1',
+                '#FF3DC4',
+                '#FF3AB7',
+                '#2F637D', // negro
               ]}
               onStopSpinning={() => {
                 setMustSpin(false);
