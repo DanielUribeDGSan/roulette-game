@@ -5,7 +5,7 @@ import { add_letter } from '../redux/features/letters-slice';
 export const RegisterLetters = () => {
   const dispatch = useDispatch();
 
-  const letters: string[] = useMemo(() => ['A', 'B'], []);
+  const letters: string[] = useMemo(() => [], []);
 
   useEffect(() => {
     letters.forEach((letter) => {

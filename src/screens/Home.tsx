@@ -13,9 +13,14 @@ import { Score } from '../interfaces/sccore.ts';
 import useShowAlerts from '../hooks/useShowAlerts.ts';
 import { useActionsPlayer } from '../hooks/useActionsPlayer.ts';
 import { TextFieldComponent } from '../components/utils/TextField.tsx';
+import { get_letters } from '../redux/features/letters-slice.ts';
 
 interface State {
   users: { data: Score[] };
+}
+
+interface StateLetter {
+  letters: { data: string[] };
 }
 
 export const Home = () => {
@@ -25,13 +30,16 @@ export const Home = () => {
     (state: State) => state.users
   );
 
+  const { data: lettersData }: { data: string[] } = useSelector(
+    (state: StateLetter) => state.letters
+  );
+
   const [open, setOpen] = useState(false);
   const [openLetter, setOpenLetter] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [buyVocals, setBuyVocals] = useState(false);
   const [points, setPoints] = useState(0);
   const [play, setPlay] = useState(false);
-  const [founLetter, setFounLetter] = useState(true);
 
   const oration = 'Amores, por un placer mil dolores';
 
@@ -44,7 +52,7 @@ export const Home = () => {
     setPoints: setPoints,
     buyVocals: buyVocals,
     setBuyVocals: setBuyVocals,
-    setFounLetter: setFounLetter,
+    setInputValue: setInputValue,
   });
 
   useActionsPlayer({
@@ -61,16 +69,14 @@ export const Home = () => {
     dispatch(get_users());
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(get_letters());
+  }, [dispatch]);
+
   return (
     <div className='home__screen'>
       <ShowUsers data={userData} />
-      <Board
-        oration={oration.toUpperCase()}
-        founLetter={founLetter}
-        setFounLetter={setFounLetter}
-        inputValue={inputValue}
-        setInputValue={setInputValue}
-      />
+      <Board oration={oration.toUpperCase()} usedLetters={lettersData} />
       <div className='modals__content d-flex gap-5'>
         <Modal
           open={openLetter}
@@ -110,6 +116,7 @@ export const Home = () => {
       </div>
 
       {/* <RegisterPlayers /> */}
+      {/* <Cleanletters /> */}
       {/* <DeletePlayers /> */}
     </div>
   );

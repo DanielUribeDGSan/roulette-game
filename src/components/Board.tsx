@@ -1,22 +1,15 @@
+import React from 'react';
+
 interface Props {
   oration: string;
-  founLetter: boolean;
-  setFounLetter: React.Dispatch<React.SetStateAction<boolean>>;
-  inputValue: string;
-  setInputValue: React.Dispatch<React.SetStateAction<string>>;
+  usedLetters: string[];
 }
 
-export const Board = ({
-  oration,
-  founLetter,
-  setFounLetter,
-  inputValue,
-  setInputValue,
-}: Props) => {
+export const Board = ({ oration, usedLetters }: Props) => {
   // Dividir la oración en palabras
   const words = oration.split(' ');
 
-  // Funcíon para generar las rows
+  // Función para generar las rows
   const generateRow = (row: string[]) => {
     const rowText = row.join(' ');
     const emptySpaces = 14 - rowText.length;
@@ -26,7 +19,9 @@ export const Board = ({
         {rowText.split('').map((char, index) => (
           <div
             className={
-              char === ','
+              usedLetters.includes(char)
+                ? 'square success'
+                : char === ','
                 ? 'square success'
                 : char.trim() !== ''
                 ? 'square'
