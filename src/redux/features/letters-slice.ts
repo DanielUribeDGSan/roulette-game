@@ -12,8 +12,6 @@ const letterSlice = createSlice({
   initialState,
   reducers: {
     add_letter: (state, { payload }: PayloadAction<string>) => {
-      console.log('payload', payload);
-
       const letterIndex = state.data.findIndex((letter) => letter === payload);
 
       if (letterIndex !== -1) {

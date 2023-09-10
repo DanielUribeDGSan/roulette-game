@@ -1,8 +1,18 @@
 interface Props {
   oration: string;
+  founLetter: boolean;
+  setFounLetter: React.Dispatch<React.SetStateAction<boolean>>;
+  inputValue: string;
+  setInputValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const Board = ({ oration }: Props) => {
+export const Board = ({
+  oration,
+  founLetter,
+  setFounLetter,
+  inputValue,
+  setInputValue,
+}: Props) => {
   // Dividir la oración en palabras
   const words = oration.split(' ');
 

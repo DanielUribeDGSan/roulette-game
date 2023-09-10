@@ -31,6 +31,7 @@ export const Home = () => {
   const [buyVocals, setBuyVocals] = useState(false);
   const [points, setPoints] = useState(0);
   const [play, setPlay] = useState(false);
+  const [founLetter, setFounLetter] = useState(true);
 
   const oration = 'Amores, por un placer mil dolores';
 
@@ -41,6 +42,9 @@ export const Home = () => {
     oration: oration.toUpperCase(),
     setPlay: setPlay,
     setPoints: setPoints,
+    buyVocals: buyVocals,
+    setBuyVocals: setBuyVocals,
+    setFounLetter: setFounLetter,
   });
 
   useActionsPlayer({
@@ -49,8 +53,8 @@ export const Home = () => {
     play: play,
     inputValue: inputValue,
     oration: oration.toUpperCase(),
-    setInputValue: setInputValue,
     setPlay: setPlay,
+    buyVocals: buyVocals,
   });
 
   useEffect(() => {
@@ -60,7 +64,13 @@ export const Home = () => {
   return (
     <div className='home__screen'>
       <ShowUsers data={userData} />
-      <Board oration={oration.toUpperCase()} />
+      <Board
+        oration={oration.toUpperCase()}
+        founLetter={founLetter}
+        setFounLetter={setFounLetter}
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+      />
       <div className='modals__content d-flex gap-5'>
         <Modal
           open={openLetter}

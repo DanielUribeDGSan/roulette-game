@@ -10,10 +10,13 @@ interface Props {
   oration: string;
   inputValue: string;
   setPoints: React.Dispatch<React.SetStateAction<number>>;
+  buyVocals: boolean;
+  setBuyVocals: React.Dispatch<React.SetStateAction<boolean>>;
+  setFounLetter: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 
-const useShowAlerts = ({ points, play, oration, inputValue, setPlay, setPoints }: Props) => {
+const useShowAlerts = ({ points, play, oration, inputValue, setPlay, setPoints, buyVocals, setBuyVocals, setFounLetter }: Props) => {
 
   useEffect(() => {
     let active = true;
@@ -21,8 +24,20 @@ const useShowAlerts = ({ points, play, oration, inputValue, setPlay, setPoints }
     if (active && play && inputValue) {
       const indice = oration.indexOf(inputValue);
 
-
-      if (points > 0 && indice !== -1) {
+      if (buyVocals && indice !== -1) {
+        Swal.fire({
+          title: 'Letra comprada',
+          text: `Has comprado la vocal: ${inputValue} `,
+          width: 700,
+          padding: '3em',
+          color: '#716add',
+          background: `#fff url('${Backgroud}')`,
+          customClass: 'alert-points',
+          confirmButtonText: 'Aceptar',
+        });
+        setBuyVocals(false);
+        setFounLetter(true);
+      } else if (points > 0 && indice !== -1) {
         Swal.fire({
           title: 'Has ganado',
           text: `${points}  puntos`,
@@ -33,6 +48,8 @@ const useShowAlerts = ({ points, play, oration, inputValue, setPlay, setPoints }
           customClass: 'alert-points',
           confirmButtonText: 'Aceptar',
         });
+        setPoints(0);
+        setFounLetter(true);
       } else {
         Swal.fire({
           title: 'Letra no encontrada',
@@ -44,7 +61,7 @@ const useShowAlerts = ({ points, play, oration, inputValue, setPlay, setPoints }
           customClass: 'alert-points',
           confirmButtonText: 'Aceptar',
         });
-
+        setPoints(0);
       }
 
     }
@@ -61,6 +78,7 @@ const useShowAlerts = ({ points, play, oration, inputValue, setPlay, setPoints }
         confirmButtonText: 'Aceptar',
       });
       setPlay(false);
+      setPoints(0);
     }
 
 
@@ -85,7 +103,7 @@ const useShowAlerts = ({ points, play, oration, inputValue, setPlay, setPoints }
     return () => {
       active = false;
     };
-  }, [points, play, inputValue, oration, setPlay, setPoints]);
+  }, [points, play, inputValue, oration, setPlay, setPoints, buyVocals, setBuyVocals]);
 
 }
 

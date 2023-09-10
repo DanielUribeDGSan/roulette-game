@@ -10,36 +10,40 @@ interface Props {
   play: boolean;
   inputValue: string;
   oration: string;
-  setInputValue: React.Dispatch<React.SetStateAction<string>>;
   setPlay: React.Dispatch<React.SetStateAction<boolean>>;
+  buyVocals: boolean;
 }
 
-export const useActionsPlayer = ({ data, points, play, inputValue, oration, setInputValue, setPlay }: Props) => {
+export const useActionsPlayer = ({ data, points, play, inputValue, oration, setPlay, buyVocals }: Props) => {
   const dispatch = useDispatch();
-
-
-  const vocals = ["A", "E", "I", "O", "U"];
 
   const [player, setPlayer] = useState<Score | null>(null);
 
   const updatePoints = useCallback((points: number) => {
 
     if (player && inputValue) {
-
       const indice = oration.indexOf(inputValue);
+      const vocals = ["A", "E", "I", "O", "U"];
 
-      if (points > 0 && indice !== -1) {
+      if (buyVocals && indice !== -1 && vocals.includes(inputValue)) {
+        setPlayer({ ...player, points: player?.points - 250 });
+        dispatch(add_letter(inputValue));
+        dispatch(add_user({ ...player, points: player?.points - 250 }));
+
+      }
+
+      if (!buyVocals && points > 0 && indice !== -1) {
         setPlayer({ ...player, points: player?.points + points });
         dispatch(add_letter(inputValue));
         dispatch(add_user({ ...player, points: player?.points + points }));
       }
 
       setPlay(false);
-      setInputValue('');
+
     }
 
   }
-    , [player, dispatch, oration, inputValue, setInputValue, setPlay]);
+    , [player, dispatch, oration, inputValue, setPlay, buyVocals]);
 
 
   useEffect(() => {
