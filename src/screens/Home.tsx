@@ -14,6 +14,7 @@ import useShowAlerts from '../hooks/useShowAlerts.ts';
 import { useActionsPlayer } from '../hooks/useActionsPlayer.ts';
 import { TextFieldComponent } from '../components/utils/TextField.tsx';
 import { get_letters } from '../redux/features/letters-slice.ts';
+import { ButtonFloat } from '../components/utils/ButtonFloat.tsx';
 
 interface State {
   users: { data: Score[] };
@@ -40,6 +41,8 @@ export const Home = () => {
   const [buyVocals, setBuyVocals] = useState(false);
   const [points, setPoints] = useState(0);
   const [play, setPlay] = useState(false);
+  const [winner, setWinner] = useState(false);
+  const [loseTurn, setLoseTurn] = useState(false);
 
   const oration = 'Amores, por un placer mil dolores';
 
@@ -53,6 +56,11 @@ export const Home = () => {
     buyVocals: buyVocals,
     setBuyVocals: setBuyVocals,
     setInputValue: setInputValue,
+    winner: winner,
+    setWinner: setWinner,
+    loseTurn: loseTurn,
+    setLoseTurn: setLoseTurn,
+    lettersData: lettersData,
   });
 
   useActionsPlayer({
@@ -63,6 +71,9 @@ export const Home = () => {
     oration: oration.toUpperCase(),
     setPlay: setPlay,
     buyVocals: buyVocals,
+    winner: winner,
+    loseTurn: loseTurn,
+    lettersData: lettersData,
   });
 
   useEffect(() => {
@@ -75,6 +86,7 @@ export const Home = () => {
 
   return (
     <div className='home__screen'>
+      <ButtonFloat oration={oration.toUpperCase()} setWinner={setWinner} />
       <ShowUsers data={userData} />
       <Board oration={oration.toUpperCase()} usedLetters={lettersData} />
       <div className='modals__content d-flex gap-5'>
@@ -111,6 +123,7 @@ export const Home = () => {
             setPoints={setPoints}
             setOpenLetter={setOpenLetter}
             setPlay={setPlay}
+            setLoseTurn={setLoseTurn}
           />
         </Modal>
       </div>

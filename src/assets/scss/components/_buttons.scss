@@ -1,0 +1,15 @@
+@import '../utils/index.scss';
+
+.buttons__float {
+  .btn-float {
+    position: absolute;
+    left: 2%;
+    top: 2%;
+    svg {
+      font-size: 3rem;
+    }
+  }
+  .reset {
+    left: 6%;
+  }
+}

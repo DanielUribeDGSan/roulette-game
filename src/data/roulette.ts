@@ -113,3 +113,120 @@ export const rouletteData = [
   },
 
 ];
+
+
+export const rouletteData2 = [
+  {
+    id: 1,
+    text: 'Pierde turno',
+  },
+  {
+    id: 2,
+    text: 'Pierde turno',
+  },
+  {
+    id: 3,
+    text: 'Pierde turno',
+  },
+  {
+    id: 4,
+    text: 'Pierde turno',
+  },
+  {
+    id: 5,
+    text: 'Pierde turno',
+  },
+  {
+    id: 6,
+    text: 'Pierde turno',
+  },
+  {
+    id: 7,
+    text: 'Pierde turno',
+  },
+  {
+    id: 8,
+    text: 'Pierde turno',
+  },
+  {
+    id: 9,
+    text: 'Pierde turno',
+  },
+  {
+    id: 10,
+    text: 'Pierde turno',
+  },
+  {
+    id: 11,
+    text: 'Pierde turno',
+  },
+  {
+    id: 12,
+    text: 'Pierde turno',
+  },
+  {
+    id: 13,
+    text: 'Pierde turno',
+  },
+  {
+    id: 14,
+    text: 'Pierde turno',
+  },
+  {
+    id: 15,
+    text: 'Pierde turno',
+  },
+  {
+    id: 16,
+    text: 'Pierde turno',
+  },
+  {
+    id: 17,
+    text: 'Pierde turno',
+  },
+  {
+    id: 18,
+    text: 'Pierde turno',
+  },
+  {
+    id: 19,
+    text: 'Pierde turno',
+  },
+  {
+    id: 20,
+    text: 'Pierde turno',
+  },
+  {
+    id: 21,
+    text: 'Pierde turno',
+  },
+  {
+    id: 22,
+    text: 'Pierde turno',
+  },
+  {
+    id: 23,
+    text: 'Pierde turno',
+  },
+  {
+    id: 24,
+    text: 'Pierde turno',
+  },
+  {
+    id: 25,
+    text: 'Pierde turno',
+  },
+  {
+    id: 26,
+    text: 'Pierde turno',
+  },
+  {
+    id: 27,
+    text: 'Pierde turno',
+  },
+  {
+    id: 28,
+    text: 'Pierde turno',
+  },
+
+];

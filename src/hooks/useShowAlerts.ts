@@ -13,32 +13,73 @@ interface Props {
   buyVocals: boolean;
   setBuyVocals: React.Dispatch<React.SetStateAction<boolean>>;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
+  winner: boolean;
+  setWinner: React.Dispatch<React.SetStateAction<boolean>>;
+  loseTurn: boolean;
+  setLoseTurn: React.Dispatch<React.SetStateAction<boolean>>;
+  lettersData: string[];
 }
 
-
-const useShowAlerts = ({ points, play, oration, inputValue, setPlay, setPoints, buyVocals, setBuyVocals, setInputValue }: Props) => {
+const useShowAlerts = ({ points, play, oration, inputValue, setPlay, setPoints, buyVocals, setBuyVocals, setInputValue, winner, setWinner, loseTurn,
+  setLoseTurn, lettersData }: Props) => {
 
   useEffect(() => {
     let active = true;
 
-    if (active && play && points < 0) {
+    if (active && winner) {
       Swal.fire({
-        title: 'Ooops',
-        text: `Pierdes turno`,
+        title: 'Felicidades',
+        text: `Ganaste el juego`,
         width: 700,
         padding: '3em',
         color: '#716add',
         background: `#fff url('${Backgroud}')`,
         customClass: 'alert-points',
         confirmButtonText: 'Aceptar',
+        showConfirmButton: false
       });
-      setPlay(false);
-      setPoints(0);
-      setInputValue('');
+      setWinner(false);
     }
 
+    return () => {
+      active = false;
+    }
+  }, [winner, setWinner])
 
-    if (active && play && points != 0 && !inputValue) {
+  useEffect(() => {
+    let active = true;
+
+    if (inputValue) {
+      const indice = oration.indexOf(inputValue);
+
+      if (active && buyVocals && indice !== -1) {
+        Swal.fire({
+          title: 'Letra comprada',
+          text: `Has comprado la vocal: ${inputValue} `,
+          width: 700,
+          padding: '3em',
+          color: '#716add',
+          background: `#fff url('${Backgroud}')`,
+          customClass: 'alert-points',
+          confirmButtonText: 'Aceptar',
+          showConfirmButton: false
+
+        });
+        setBuyVocals(false);
+        setInputValue('');
+      }
+    }
+
+    return () => {
+      active = false;
+    }
+  }, [buyVocals, setBuyVocals, inputValue, setInputValue, oration])
+
+
+  useEffect(() => {
+    let active = true;
+
+    if (active && play && points != 0 && !inputValue && !loseTurn) {
       Swal.fire({
         title: 'No escribiste una letra',
         text: `Intentalo de nuevo`,
@@ -55,44 +96,74 @@ const useShowAlerts = ({ points, play, oration, inputValue, setPlay, setPoints, 
       setInputValue('');
     }
 
+    if (active && play && loseTurn) {
+      Swal.fire({
+        title: 'Ooops',
+        text: `Pierdes turno`,
+        width: 700,
+        padding: '3em',
+        color: '#716add',
+        background: `#fff url('${Backgroud}')`,
+        customClass: 'alert-points',
+        confirmButtonText: 'Aceptar',
+        showConfirmButton: false
+      });
+      setPlay(false);
+      setPoints(0);
+      setInputValue('');
+      setLoseTurn(false);
+    }
+
+    return () => {
+      active = false;
+    }
+  }, [inputValue, play, points, setInputValue, setPlay, setPoints, loseTurn,
+    setLoseTurn])
+
+
+  useEffect(() => {
+    let active = true;
 
     if (active && play && inputValue) {
       const indice = oration.indexOf(inputValue);
 
-      if (buyVocals && indice !== -1) {
-        Swal.fire({
-          title: 'Letra comprada',
-          text: `Has comprado la vocal: ${inputValue} `,
-          width: 700,
-          padding: '3em',
-          color: '#716add',
-          background: `#fff url('${Backgroud}')`,
-          customClass: 'alert-points',
-          confirmButtonText: 'Aceptar',
-          showConfirmButton: false
+      if (!lettersData.includes(inputValue)) {
 
-        });
-        setBuyVocals(false);
-        setInputValue('');
-      } else if (points > 0 && indice !== -1) {
-        Swal.fire({
-          title: 'Has ganado',
-          text: `${points}  puntos`,
-          width: 700,
-          padding: '3em',
-          color: '#716add',
-          background: `#fff url('${Backgroud}')`,
-          customClass: 'alert-points',
-          confirmButtonText: 'Aceptar',
-          showConfirmButton: false
+        if (points > 0 && indice !== -1) {
+          Swal.fire({
+            title: 'Has ganado',
+            text: `${points}  puntos`,
+            width: 700,
+            padding: '3em',
+            color: '#716add',
+            background: `#fff url('${Backgroud}')`,
+            customClass: 'alert-points',
+            confirmButtonText: 'Aceptar',
+            showConfirmButton: false
 
-        });
-        setPoints(0);
-        setInputValue('');
+          });
+          setPoints(0);
+          setInputValue('');
+        } else {
+          Swal.fire({
+            title: 'Letra no encontrada',
+            text: `Esa letra no existe en la oración`,
+            width: 700,
+            padding: '3em',
+            color: '#716add',
+            background: `#fff url('${Backgroud}')`,
+            customClass: 'alert-points',
+            confirmButtonText: 'Aceptar',
+            showConfirmButton: false
+
+          });
+          setPoints(0);
+          setInputValue('');
+        }
       } else {
         Swal.fire({
-          title: 'Letra no encontrada',
-          text: `Esa letra no existe en la oración`,
+          title: 'Letra duplicada',
+          text: `Esa letra ya se había dicho`,
           width: 700,
           padding: '3em',
           color: '#716add',
@@ -117,7 +188,7 @@ const useShowAlerts = ({ points, play, oration, inputValue, setPlay, setPoints, 
     return () => {
       active = false;
     };
-  }, [points, play, inputValue, oration, setPlay, setPoints, buyVocals, setBuyVocals, setInputValue]);
+  }, [points, play, inputValue, oration, setPoints, setInputValue]);
 
 }
 

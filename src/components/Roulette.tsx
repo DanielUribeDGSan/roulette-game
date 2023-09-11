@@ -12,6 +12,7 @@ interface RouletteProps {
   setPoints: React.Dispatch<React.SetStateAction<number>>;
   setOpenLetter: React.Dispatch<React.SetStateAction<boolean>>;
   setPlay: React.Dispatch<React.SetStateAction<boolean>>;
+  setLoseTurn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Roulette: React.FC<RouletteProps> = ({
@@ -20,6 +21,7 @@ const Roulette: React.FC<RouletteProps> = ({
   setPoints,
   setOpenLetter,
   setPlay,
+  setLoseTurn,
 }) => {
   const [mustSpin, setMustSpin] = useState(false);
   const [turned, setTurned] = useState(false);
@@ -54,13 +56,16 @@ const Roulette: React.FC<RouletteProps> = ({
     if (active && !mustSpin && rouletteData.length > 1 && turned) {
       if (rouletteData[prizeNumber].completeOption === 'Pierde turno') {
         setPoints(-1);
+        setLoseTurn(true);
       } else {
         setPoints(parseInt(rouletteData[prizeNumber].completeOption));
       }
       setTurned(false);
+
       setTimeout(() => {
         setOpen(false);
       }, 1300);
+
       setTimeout(() => {
         if (rouletteData[prizeNumber].completeOption === 'Pierde turno') {
           setPlay(true);
@@ -82,6 +87,7 @@ const Roulette: React.FC<RouletteProps> = ({
     setPoints,
     setOpenLetter,
     setPlay,
+    setLoseTurn,
   ]);
 
   return (
