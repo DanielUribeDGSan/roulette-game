@@ -18,10 +18,59 @@ interface Props {
   loseTurn: boolean;
   setLoseTurn: React.Dispatch<React.SetStateAction<boolean>>;
   lettersData: string[];
+  finishedProcess: boolean;
+  setFinishedprocess: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const useShowAlerts = ({ points, play, oration, inputValue, setPlay, setPoints, buyVocals, setBuyVocals, setInputValue, winner, setWinner, loseTurn,
-  setLoseTurn, lettersData }: Props) => {
+  setLoseTurn, lettersData, finishedProcess,
+  setFinishedprocess }: Props) => {
+
+  useEffect(() => {
+    let active = true;
+
+    if (inputValue && buyVocals && play) {
+      const indice = oration.indexOf(inputValue);
+
+      if (active && buyVocals && indice !== -1 && !lettersData.includes(inputValue)) {
+        Swal.fire({
+          title: 'Letra comprada',
+          text: `Has comprado la vocal: ${inputValue} `,
+          width: 700,
+          padding: '3em',
+          color: '#716add',
+          background: `#fff url('${Backgroud}')`,
+          customClass: 'alert-points',
+          confirmButtonText: 'Aceptar',
+          showConfirmButton: false
+
+        });
+        setBuyVocals(false);
+        setInputValue('');
+        setPlay(false);
+      } else {
+        Swal.fire({
+          title: 'Letra duplicada',
+          text: `Esa letra ya se había dicho`,
+          width: 700,
+          padding: '3em',
+          color: '#716add',
+          background: `#fff url('${Backgroud}')`,
+          customClass: 'alert-points',
+          confirmButtonText: 'Aceptar',
+          showConfirmButton: false
+
+        });
+        setBuyVocals(false);
+        setInputValue('');
+        setPlay(false);
+      }
+    }
+
+    return () => {
+      active = false;
+    }
+  }, [buyVocals, setBuyVocals, setInputValue, oration, inputValue, play, lettersData, setPlay])
 
   useEffect(() => {
     let active = true;
@@ -41,39 +90,12 @@ const useShowAlerts = ({ points, play, oration, inputValue, setPlay, setPoints, 
       setWinner(false);
     }
 
-    return () => {
-      active = false;
-    }
-  }, [winner, setWinner])
-
-  useEffect(() => {
-    let active = true;
-
-    if (inputValue) {
-      const indice = oration.indexOf(inputValue);
-
-      if (active && buyVocals && indice !== -1) {
-        Swal.fire({
-          title: 'Letra comprada',
-          text: `Has comprado la vocal: ${inputValue} `,
-          width: 700,
-          padding: '3em',
-          color: '#716add',
-          background: `#fff url('${Backgroud}')`,
-          customClass: 'alert-points',
-          confirmButtonText: 'Aceptar',
-          showConfirmButton: false
-
-        });
-        setBuyVocals(false);
-        setInputValue('');
-      }
-    }
+    setPlay(false);
 
     return () => {
       active = false;
     }
-  }, [buyVocals, setBuyVocals, inputValue, setInputValue, oration])
+  }, [winner, setWinner, setPlay])
 
 
   useEffect(() => {
@@ -124,7 +146,7 @@ const useShowAlerts = ({ points, play, oration, inputValue, setPlay, setPoints, 
   useEffect(() => {
     let active = true;
 
-    if (active && play && inputValue) {
+    if (active && play && inputValue && !buyVocals && finishedProcess) {
       const indice = oration.indexOf(inputValue);
 
       if (!lettersData.includes(inputValue)) {
@@ -144,6 +166,8 @@ const useShowAlerts = ({ points, play, oration, inputValue, setPlay, setPoints, 
           });
           setPoints(0);
           setInputValue('');
+          setPlay(false);
+          setFinishedprocess(false);
         } else {
           Swal.fire({
             title: 'Letra no encontrada',
@@ -159,6 +183,8 @@ const useShowAlerts = ({ points, play, oration, inputValue, setPlay, setPoints, 
           });
           setPoints(0);
           setInputValue('');
+          setPlay(false);
+          setFinishedprocess(false);
         }
       } else {
         Swal.fire({
@@ -175,6 +201,8 @@ const useShowAlerts = ({ points, play, oration, inputValue, setPlay, setPoints, 
         });
         setPoints(0);
         setInputValue('');
+        setPlay(false);
+        setFinishedprocess(false);
       }
 
     }
@@ -188,7 +216,7 @@ const useShowAlerts = ({ points, play, oration, inputValue, setPlay, setPoints, 
     return () => {
       active = false;
     };
-  }, [points, play, inputValue, oration, setPoints, setInputValue]);
+  }, [points, play, inputValue, oration, buyVocals, lettersData, finishedProcess, setFinishedprocess, setInputValue, setPlay, setPoints]);
 
 }
 

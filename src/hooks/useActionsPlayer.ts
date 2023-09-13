@@ -1,33 +1,39 @@
 import { useCallback, useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 import { Score } from '../interfaces/sccore';
 import { useDispatch } from 'react-redux';
 import { add_user } from '../redux/features/users-slice';
 import { add_letter } from '../redux/features/letters-slice';
+import Backgroud from '../assets/images/background/background.jpeg';
 
 interface Props {
   data: Score[];
   points: number;
+  setPoints: React.Dispatch<React.SetStateAction<number>>;
   play: boolean;
+  setPlay: React.Dispatch<React.SetStateAction<boolean>>;
   inputValue: string;
   oration: string;
-  setPlay: React.Dispatch<React.SetStateAction<boolean>>;
   buyVocals: boolean;
+  setBuyVocals: React.Dispatch<React.SetStateAction<boolean>>;
   winner: boolean;
+  setWinner: React.Dispatch<React.SetStateAction<boolean>>;
   loseTurn: boolean;
-  lettersData: string[]
+  setLoseTurn: React.Dispatch<React.SetStateAction<boolean>>;
+  lettersData: string[];
+  setInputValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const useActionsPlayer = ({ data, points, play, inputValue, oration, setPlay, buyVocals, winner, loseTurn, lettersData }: Props) => {
+export const useActionsPlayer = ({ data, points, setPoints, play, inputValue, oration, buyVocals, setBuyVocals, winner, setWinner, loseTurn, setLoseTurn, lettersData, setInputValue, setPlay }: Props) => {
   const dispatch = useDispatch();
 
   const [player, setPlayer] = useState<Score | null>(null);
 
-  const loseTurnPlayer = useCallback(() => {
+  const letterNotFoubndBuy = useCallback((playerNow: Score) => {
+    if (playerNow) {
+      dispatch(add_user({ ...playerNow, active: false }));
 
-    if (player && loseTurn) {
-      dispatch(add_user({ ...player, active: false }));
-
-      const playerActual = data.find(({ id }) => id === player.id + 1);
+      const playerActual = data.find(({ id }) => id === playerNow.id + 1);
       const firstPlay = data.find(({ id }) => id === 1);
 
       if (playerActual) {
@@ -38,19 +44,40 @@ export const useActionsPlayer = ({ data, points, play, inputValue, oration, setP
         setPlayer({ ...firstPlay, active: true });
         dispatch(add_user({ ...firstPlay, active: true }));
       }
-
     }
+  }
+    , [dispatch, data]);
 
+  const loseTurnPlayer = useCallback(() => {
+
+    if (player && loseTurn) {
+      letterNotFoubndBuy(player);
+      Swal.fire({
+        title: 'Ooops',
+        text: `Pierdes turno`,
+        width: 700,
+        padding: '3em',
+        color: '#716add',
+        background: `#fff url('${Backgroud}')`,
+        customClass: 'alert-points',
+        confirmButtonText: 'Aceptar',
+        showConfirmButton: false
+      });
+      setLoseTurn(false);
+      setPoints(0);
+      setPlay(false);
+    }
   }
     , [dispatch, player, loseTurn, data]);
 
   const letterNotFoubnd = useCallback(() => {
 
-    if (player) {
+    if (player && inputValue) {
       dispatch(add_user({ ...player, active: false }));
 
       const playerActual = data.find(({ id }) => id === player.id + 1);
       const firstPlay = data.find(({ id }) => id === 1);
+      const indice = oration.indexOf(inputValue);
 
       if (playerActual) {
         setPlayer({ ...playerActual, active: true });
@@ -61,10 +88,41 @@ export const useActionsPlayer = ({ data, points, play, inputValue, oration, setP
         dispatch(add_user({ ...firstPlay, active: true }));
       }
 
-    }
+      if (indice === -1 && !lettersData.includes(inputValue)) {
+        Swal.fire({
+          title: 'Letra no encontrada',
+          text: `Esa letra no existe en la oración`,
+          width: 700,
+          padding: '3em',
+          color: '#716add',
+          background: `#fff url('${Backgroud}')`,
+          customClass: 'alert-points',
+          confirmButtonText: 'Aceptar',
+          showConfirmButton: false
 
+        });
+      } else {
+        Swal.fire({
+          title: 'Letra duplicada',
+          text: `Esa letra ya se había dicho`,
+          width: 700,
+          padding: '3em',
+          color: '#716add',
+          background: `#fff url('${Backgroud}')`,
+          customClass: 'alert-points',
+          confirmButtonText: 'Aceptar',
+          showConfirmButton: false
+
+        });
+      }
+
+      setInputValue('');
+      setPlay(false);
+
+    }
   }
-    , [dispatch, player, data]);
+    , [dispatch, player, data, inputValue, lettersData, oration]);
+
 
   const updatePoints = useCallback((points: number) => {
 
@@ -72,31 +130,119 @@ export const useActionsPlayer = ({ data, points, play, inputValue, oration, setP
       const indice = oration.indexOf(inputValue);
       const vocals = ["A", "E", "I", "O", "U"];
 
-      if (!lettersData.includes(inputValue)) {
-        if (buyVocals && indice !== -1 && vocals.includes(inputValue)) {
-          setPlayer({ ...player, points: player?.points - 250 });
-          dispatch(add_letter(inputValue));
-          dispatch(add_user({ ...player, points: player?.points - 250 }));
 
-        }
 
-        if (!buyVocals && points > 0 && indice !== -1) {
-          setPlayer({ ...player, points: player?.points + points });
-          dispatch(add_letter(inputValue));
-          dispatch(add_user({ ...player, points: player?.points + points }));
-        }
-      } else {
-        letterNotFoubnd();
+      if (!lettersData.includes(inputValue) && !buyVocals && points > 0 && indice !== -1) {
+        setPlayer({ ...player, points: player?.points + points });
+        dispatch(add_letter(inputValue));
+        dispatch(add_user({ ...player, points: player?.points + points }));
+        Swal.fire({
+          title: 'Has ganado',
+          text: `${points}  puntos`,
+          width: 700,
+          padding: '3em',
+          color: '#716add',
+          background: `#fff url('${Backgroud}')`,
+          customClass: 'alert-points',
+          confirmButtonText: 'Aceptar',
+          showConfirmButton: false
+        });
+        setPoints(0);
+        setInputValue('');
+        setPlay(false);
+
       }
 
 
+      if (buyVocals && indice !== -1 && !lettersData.includes(inputValue)) {
+        setPlayer({ ...player, points: player?.points - 250 });
+        dispatch(add_letter(inputValue));
+        dispatch(add_user({ ...player, points: player?.points - 250 }));
 
-      setPlay(false);
+        Swal.fire({
+          title: 'Letra comprada',
+          text: `Has comprado la vocal: ${inputValue} `,
+          width: 700,
+          padding: '3em',
+          color: '#716add',
+          background: `#fff url('${Backgroud}')`,
+          customClass: 'alert-points',
+          confirmButtonText: 'Aceptar',
+          showConfirmButton: false
+        });
+        setBuyVocals(false);
+        setPoints(0);
+        setPlay(false);
+        setInputValue('');
 
+      }
+
+
+      if (buyVocals && indice !== -1 && lettersData.includes(inputValue)) {
+        const playerNow = { ...player, points: player?.points - 250 };
+        setPlayer(playerNow);
+        dispatch(add_user(playerNow));
+
+        letterNotFoubndBuy(playerNow);
+        Swal.fire({
+          title: 'Letra duplicada',
+          text: `Esa letra ya se había dicho`,
+          width: 700,
+          padding: '3em',
+          color: '#716add',
+          background: `#fff url('${Backgroud}')`,
+          customClass: 'alert-points',
+          confirmButtonText: 'Aceptar',
+          showConfirmButton: false
+
+        });
+        setBuyVocals(false);
+        setPoints(0);
+        setInputValue('');
+        setPlay(false);
+      }
+
+      if (!vocals.includes(inputValue) && lettersData.includes(inputValue) && indice !== -1) {
+
+        Swal.fire({
+          title: 'Letra duplicada',
+          text: `Esa letra ya se había dicho`,
+          width: 700,
+          padding: '3em',
+          color: '#716add',
+          background: `#fff url('${Backgroud}')`,
+          customClass: 'alert-points',
+          confirmButtonText: 'Aceptar',
+          showConfirmButton: false
+
+        });
+        letterNotFoubnd();
+        setPoints(0);
+        setInputValue('');
+        setPlay(false);
+      }
+
+      if (!vocals.includes(inputValue) && !lettersData.includes(inputValue) && indice === -1) {
+        Swal.fire({
+          title: 'Letra no encontrada',
+          text: `Esa letra no existe en la oración`,
+          width: 700,
+          padding: '3em',
+          color: '#716add',
+          background: `#fff url('${Backgroud}')`,
+          customClass: 'alert-points',
+          confirmButtonText: 'Aceptar',
+          showConfirmButton: false
+
+        });
+        letterNotFoubnd();
+        setPoints(0);
+        setInputValue('');
+        setPlay(false);
+      }
     }
-
   }
-    , [player, dispatch, oration, inputValue, setPlay, buyVocals, lettersData]);
+    , [player, dispatch, oration, inputValue, buyVocals, lettersData]);
 
   const winnerPlayer = useCallback(() => {
 
@@ -106,13 +252,24 @@ export const useActionsPlayer = ({ data, points, play, inputValue, oration, setP
 
       data.map((p) => {
         dispatch(add_user({ ...p, points: 0 }));
-
       })
-    }
+      Swal.fire({
+        title: 'Felicidades',
+        text: `Ganaste el juego`,
+        width: 700,
+        padding: '3em',
+        color: '#716add',
+        background: `#fff url('${Backgroud}')`,
+        customClass: 'alert-points',
+        confirmButtonText: 'Aceptar',
+        showConfirmButton: false
+      });
+      setWinner(false);
+      setPlay(false);
 
+    }
   }
     , [dispatch, player]);
-
 
 
   useEffect(() => {
@@ -136,7 +293,6 @@ export const useActionsPlayer = ({ data, points, play, inputValue, oration, setP
       const indice = oration.indexOf(inputValue);
 
       if (points > 0 && indice === -1) letterNotFoubnd();
-
     }
 
     return () => {
@@ -147,7 +303,6 @@ export const useActionsPlayer = ({ data, points, play, inputValue, oration, setP
 
   useEffect(() => {
     let active = true;
-
 
     if (active && data.length > 0) {
 
@@ -189,7 +344,5 @@ export const useActionsPlayer = ({ data, points, play, inputValue, oration, setP
       active = false
     }
   }, [winner, winnerPlayer])
-
-
 
 }

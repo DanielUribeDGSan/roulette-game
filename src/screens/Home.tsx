@@ -10,7 +10,7 @@ import { get_users } from '../redux/features/users-slice.ts';
 
 import { ShowUsers } from '../components/ShowUsers.tsx';
 import { Score } from '../interfaces/sccore.ts';
-import useShowAlerts from '../hooks/useShowAlerts.ts';
+
 import { useActionsPlayer } from '../hooks/useActionsPlayer.ts';
 import { TextFieldComponent } from '../components/utils/TextField.tsx';
 import { get_letters } from '../redux/features/letters-slice.ts';
@@ -46,34 +46,22 @@ export const Home = () => {
 
   const oration = 'Amores, por un placer mil dolores';
 
-  useShowAlerts({
+  useActionsPlayer({
+    data: userData,
     points: points,
+    setPoints: setPoints,
     play: play,
+    setPlay: setPlay,
     inputValue: inputValue,
     oration: oration.toUpperCase(),
-    setPlay: setPlay,
-    setPoints: setPoints,
     buyVocals: buyVocals,
     setBuyVocals: setBuyVocals,
-    setInputValue: setInputValue,
     winner: winner,
     setWinner: setWinner,
     loseTurn: loseTurn,
     setLoseTurn: setLoseTurn,
     lettersData: lettersData,
-  });
-
-  useActionsPlayer({
-    data: userData,
-    points: points,
-    play: play,
-    inputValue: inputValue,
-    oration: oration.toUpperCase(),
-    setPlay: setPlay,
-    buyVocals: buyVocals,
-    winner: winner,
-    loseTurn: loseTurn,
-    lettersData: lettersData,
+    setInputValue: setInputValue,
   });
 
   useEffect(() => {
