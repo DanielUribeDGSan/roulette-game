@@ -125,10 +125,20 @@ export const useActionsPlayer = ({ data, points, setPoints, play, inputValue, or
 
 
   const updatePoints = useCallback((points: number) => {
+    console.log('input', inputValue);
+    console.log('player', player);
 
     if (player && inputValue) {
       const indice = oration.indexOf(inputValue);
       const vocals = ["A", "E", "I", "O", "U"];
+
+      console.log('entro');
+      console.log('lettersData', lettersData);
+      console.log('lettersData Validation', !lettersData.includes(inputValue));
+      console.log('buyVocals', !buyVocals);
+      console.log('points', points);
+      console.log('indice', indice !== -1);
+
 
 
 
@@ -271,6 +281,26 @@ export const useActionsPlayer = ({ data, points, setPoints, play, inputValue, or
   }
     , [dispatch, player]);
 
+  useEffect(() => {
+    let active = true;
+
+    if (active && data.length > 0) {
+
+      const playerActual = data.find(({ active }) => active === true);
+
+      if (playerActual?.active) {
+
+        if (!player || player?.id !== playerActual?.id) {
+          setPlayer(playerActual);
+        }
+      }
+    }
+
+    return () => {
+      active = false
+    }
+  }, [data, player])
+
 
   useEffect(() => {
     let active = true;
@@ -283,6 +313,19 @@ export const useActionsPlayer = ({ data, points, setPoints, play, inputValue, or
       active = false;
     }
   }, [loseTurn])
+
+
+  useEffect(() => {
+    let active = true;
+
+    if (active && player && play) {
+      updatePoints(points || -1);
+    }
+
+    return () => {
+      active = false
+    }
+  }, [points, player, play])
 
 
   useEffect(() => {
@@ -304,38 +347,6 @@ export const useActionsPlayer = ({ data, points, setPoints, play, inputValue, or
   useEffect(() => {
     let active = true;
 
-    if (active && data.length > 0) {
-
-      const playerActual = data.find(({ active }) => active === true);
-
-      if (playerActual?.active) {
-
-        if (!player || player?.id !== playerActual?.id) {
-          setPlayer(playerActual);
-        }
-      }
-    }
-
-    return () => {
-      active = false
-    }
-  }, [data, player])
-
-  useEffect(() => {
-    let active = true;
-
-    if (active && player && play) {
-      updatePoints(points || -1);
-    }
-
-    return () => {
-      active = false
-    }
-  }, [points, player, play])
-
-  useEffect(() => {
-    let active = true;
-
     if (active && winner) {
       winnerPlayer();
     }
@@ -344,5 +355,10 @@ export const useActionsPlayer = ({ data, points, setPoints, play, inputValue, or
       active = false
     }
   }, [winner, winnerPlayer])
+
+
+  console.log('points Home', points);
+  console.log('player Home', player);
+  console.log('play Home', play);
 
 }

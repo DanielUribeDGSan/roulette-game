@@ -56,6 +56,7 @@ const Roulette: React.FC<RouletteProps> = ({
     if (active && !mustSpin && rouletteData.length > 1 && turned) {
       if (rouletteData[prizeNumber].completeOption === 'Pierde turno') {
         setPoints(-1);
+        setPlay(true);
         setLoseTurn(true);
       } else {
         setPoints(parseInt(rouletteData[prizeNumber].completeOption));
@@ -67,9 +68,7 @@ const Roulette: React.FC<RouletteProps> = ({
       }, 1300);
 
       setTimeout(() => {
-        if (rouletteData[prizeNumber].completeOption === 'Pierde turno') {
-          setPlay(true);
-        } else {
+        if (rouletteData[prizeNumber].completeOption !== 'Pierde turno') {
           setOpenLetter(true);
         }
       }, 1500);

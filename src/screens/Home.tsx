@@ -116,8 +116,8 @@ export const Home = () => {
         </Modal>
       </div>
 
-      {/* <RegisterPlayers /> */}
-      {/* <Cleanletters /> */}
+      {/* <RegisterPlayers />
+      <Cleanletters /> */}
       {/* <DeletePlayers /> */}
     </div>
   );
