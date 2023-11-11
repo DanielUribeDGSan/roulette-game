@@ -44,7 +44,7 @@ export const Home = () => {
   const [winner, setWinner] = useState(false);
   const [loseTurn, setLoseTurn] = useState(false);
 
-  const oration = 'Amores, por un placer mil dolores';
+  const oration = 'Amores, por un placer mil dolores. Como un nacer';
 
   useActionsPlayer({
     data: userData,
@@ -86,8 +86,7 @@ export const Home = () => {
           setBuyVocals={setBuyVocals}
           setInputValue={setInputValue}
           setPlay={setPlay}
-          points={points}
-        >
+          points={points}>
           <TextFieldComponent
             setOpenLetter={setOpenLetter}
             inputValue={inputValue}
@@ -103,8 +102,7 @@ export const Home = () => {
           setBuyVocals={setBuyVocals}
           setInputValue={setInputValue}
           setPlay={setPlay}
-          points={points}
-        >
+          points={points}>
           <Roulette
             data={rouletteData}
             setOpen={setOpen}
@@ -115,10 +113,6 @@ export const Home = () => {
           />
         </Modal>
       </div>
-
-      {/* <RegisterPlayers />
-      <Cleanletters /> */}
-      {/* <DeletePlayers /> */}
     </div>
   );
 };

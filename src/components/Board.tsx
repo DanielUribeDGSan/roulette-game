@@ -19,14 +19,13 @@ export const Board = ({ oration, usedLetters }: Props) => {
             className={
               usedLetters.includes(char)
                 ? 'square success'
-                : char === ','
-                ? 'square success'
+                : char === ',' || char === '.'
+                ? 'square success punctuation'
                 : char.trim() !== ''
                 ? 'square'
                 : 'square empty'
             }
-            key={`char_${index}`}
-          >
+            key={`char_${index}`}>
             {char}
           </div>
         ))}

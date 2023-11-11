@@ -5,6 +5,8 @@ import {
 } from '../../redux/features/letters-slice';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import usePlayers from '../../hooks/usePlayers';
 
 interface Props {
   oration: string;
@@ -13,6 +15,7 @@ interface Props {
 
 export const ButtonFloat = ({ oration, setWinner }: Props) => {
   const dispatch = useDispatch();
+  const { addPlayers } = usePlayers();
 
   const stringToCharArray = (inputString: string) => {
     const charArray = inputString.replace(/\s/g, '').split('');
@@ -33,6 +36,10 @@ export const ButtonFloat = ({ oration, setWinner }: Props) => {
     dispatch(delete_all_letters());
   };
 
+  const handleClickAddPlayers = () => {
+    addPlayers();
+  };
+
   return (
     <div className='buttons__float'>
       <button className='btn-float' onClick={handleClick}>
@@ -40,6 +47,9 @@ export const ButtonFloat = ({ oration, setWinner }: Props) => {
       </button>
       <button className='btn-float reset' onClick={handleClickReset}>
         <RestartAltIcon />
+      </button>
+      <button className='btn-float players' onClick={handleClickAddPlayers}>
+        <PersonAddAltIcon />
       </button>
     </div>
   );
